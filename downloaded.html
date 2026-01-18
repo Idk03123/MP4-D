@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Downloader</title>
+</head>
+<body>
+
+<h2>Preparing download…</h2>
+<p id="status">Waiting for video</p>
+
+<button id="btn" hidden>Download MP4</button>
+
+<script>
+let url = "";
+let filename = "video.mp4";
+
+window.addEventListener("message", e => {
+  if (e.data.type === "MP4_DOWNLOAD") {
+    url = e.data.url;
+    filename = e.data.filename || filename;
+    document.getElementById("status").textContent = "Ready!";
+    document.getElementById("btn").hidden = false;
+  }
+});
+
+document.getElementById("btn").onclick = () => {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
+</script>
+
+</body>
+</html>
