@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Video Editor</title>
+</head>
+<body>
+
+<h1>My Video Editor</h1>
+
+<video id="vid" controls width="400">
+  <source src="assets/exported.mp4" type="video/mp4">
+</video>
+
+<br><br>
+<button onclick="download()">Download</button>
+
+<script>
+function download() {
+  const videoURL = document.querySelector("video source").src;
+
+  const popup = window.open(
+    "downloader.html",
+    "mp4Downloader",
+    "width=480,height=420"
+  );
+
+  const send = setInterval(() => {
+    if (!popup || popup.closed) {
+      clearInterval(send);
+      return;
+    }
+
+    popup.postMessage({
+      type: "MP4_DOWNLOAD",
+      url: videoURL,
+      filename: "my-video.mp4"
+    }, "*");
+
+    clearInterval(send);
+  }, 400);
+}
+</script>
+
+</body>
+</html>
